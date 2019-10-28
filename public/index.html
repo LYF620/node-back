@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery-1.9.1.min.js"></script>
+</head>
+<body>
+    <form action="http://localhost:8088" method="post">
+        id:<input type="text" name="id"/>
+        name:<input type="text" name="name"/>
+        password:<input type="password" name="password"/>
+        <input type="button" class="insert" value="注册"/>
+        <input type="button" class="login" value="登录"/>
+        <input type="button" class="select" value="查询"/>
+        <input type="button" class="delete" value="删除"/>
+        <input type="button" class="update" value="更改"/>
+    </form>
+    <script>
+       $(function(){
+           $(".delete").on('click',function(){
+               console.log(1);
+               var id = $("input:nth-of-type(1)").val();
+               $.ajax({
+                   type:'post',
+                   url:'http://localhost:8088/delete',
+                   data:{'id':id},
+                   success : function(){
+                         alert("删除成功");
+                   },
+                   error : function(){
+                         alert("删除失败");
+                   }
+               })
+           })
+           $(".select").on('click',function(){               
+               $.ajax({
+                   type:'get',
+                   url:'http://localhost:8088/select',
+                   success : function(result){
+                        alert("获取成功");
+                   },
+                   error : function(result){
+
+                   }
+
+               })
+           })
+           $(".update").on('click',function(){            
+                var name = $("input:nth-of-type(2)").val();
+                var password = $("input:nth-of-type(3)").val();
+                var id = $("input:nth-of-type(1)").val();
+                // $.ajax({
+                //         type : 'get',
+                //         url : 'http://localhost:8088',
+                //         data:{'id':id,'name':name,'password':password},      
+                //         success : function(result){
+                //             alert("更新成功");
+                //         },
+                //         error : function(result){
+                //             alert("更新失败");
+                //         }
+                //     })   
+                // })
+                $.post("http://localhost:8088/update",{
+                    id:id,
+                    name:name,
+                    password:password
+                },function(req,res){
+                    alert("更改成功");
+                })
+            })
+           $(".insert").on('click',function(){
+               var name = $("input:nth-of-type(2)").val();
+               var password = $("input:nth-of-type(3)").val();
+               var id = $("input:nth-of-type(1)").val();
+               $.post("http://localhost:8088/insert",{
+                   id:id,
+                   name:name,
+                   password:password
+               },function(data){
+                   alert("提交成功......");
+                                      console.log(data);
+               })
+           })
+       })
+    </script>
+</body>
+</html>
